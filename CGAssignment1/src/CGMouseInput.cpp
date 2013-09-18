@@ -1,5 +1,5 @@
 /*
- * GLMouseInput.cpp
+ * CGMouseInput.cpp
  *
  *  Created on: Sep 17, 2013
  *      Author: broberto
@@ -55,27 +55,27 @@ void CGMouseInput::_processGlutMouse(int button, int state, int x, int y) {
 	}
 }
 
-void CGMouseInput::setMouseLeftClickHandler(void (*onLeftClick)(CGMouseX, CGMouseY)) {
+void CGMouseInput::setMouseLeftClickHandler(CGMouseInput::CGMouseFunctionPtr onLeftClick) {
 	m_onMouseLeftClick = onLeftClick;
 }
 
-void CGMouseInput::setMouseLeftClickReleaseHandler(void (*onLeftClickRelease)(CGMouseX, CGMouseY)) {
+void CGMouseInput::setMouseLeftClickReleaseHandler(CGMouseInput::CGMouseFunctionPtr onLeftClickRelease) {
 	m_onMouseLeftClickRelease = onLeftClickRelease;
 }
 
-void CGMouseInput::setMouseRightClickHandler(void (*onRightClick)(CGMouseX, CGMouseY)) {
+void CGMouseInput::setMouseRightClickHandler(CGMouseInput::CGMouseFunctionPtr onRightClick) {
 	m_onMouseRightClick = onRightClick;
 }
 
-void CGMouseInput::setMouseRightClickReleaseHandler(void (*onRightClickRelease)(CGMouseX, CGMouseY)) {
+void CGMouseInput::setMouseRightClickReleaseHandler(CGMouseInput::CGMouseFunctionPtr onRightClickRelease) {
 	m_onMouseRightClickRelease = onRightClickRelease;
 }
 
-void CGMouseInput::setMouseMoveHandler(void (*onMouseMove)(CGMouseX, CGMouseY)) {
+void CGMouseInput::setMouseMoveHandler(CGMouseInput::CGMouseFunctionPtr onMouseMove) {
 	m_onMouseMove = onMouseMove;
 }
 
-void CGMouseInput::setMouseIdleHandler(void (*onMouseIdle)(CGMouseX, CGMouseY)) {
+void CGMouseInput::setMouseIdleHandler(CGMouseInput::CGMouseFunctionPtr onMouseIdle) {
 	m_onMouseIdle = onMouseIdle;
 }
 

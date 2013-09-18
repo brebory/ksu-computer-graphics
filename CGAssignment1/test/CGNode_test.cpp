@@ -1,5 +1,5 @@
 /*
- * GLEntity_test.cpp
+ *  CGNode_test.cpp
  *
  *  Created on: Sep 17, 2013
  *      Author: broberto
@@ -9,4 +9,4 @@
 
 namespace TinyCGLib {
 
-} /* namespace KSUComputerGraphics */
+} /* namespace TinyCGLib */

@@ -1,5 +1,5 @@
 /*
- * GLEntity.h
+ * CGNode.h
  *
  *  Created on: Sep 17, 2013
  *      Author: broberto
@@ -16,7 +16,7 @@ namespace TinyCGLib {
 
 class CGNode {
 public:
-	typedef boost::shared_ptr<CGNode> ManagedNodePtr;
+	typedef boost::shared_ptr<CGNode> ManagedCGNodePtr;
 	friend class CGNodeManager;
 
 	CGNode();
@@ -29,8 +29,8 @@ public:
 
 private:
 	GLfloat _position[3];
-	std::vector<ManagedNodePtr> _children;
-	ManagedNodePtr _parent;
+	std::vector<ManagedCGNodePtr> _children;
+	ManagedCGNodePtr _parent;
 
 	virtual void drawSelf();
 	virtual void drawChildren();

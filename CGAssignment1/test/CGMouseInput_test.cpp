@@ -1,5 +1,5 @@
 /*
- * GLMouseInput_test.cpp
+ * CGMouseInput_test.cpp
  *
  *  Created on: Sep 17, 2013
  *      Author: broberto

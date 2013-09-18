@@ -1,11 +1,11 @@
 /*
- * GLMouseInput.h
+ * CGMouseInput.h
  *
  *  Created on: Sep 17, 2013
  *      Author: broberto
  *
- *      Class GLMouseInput provides an interface for setting various action
- *      handlers for mouse i/o in OpenGL and GLUT.
+ *      Class GLMouseInput provides a singleton interface for setting various
+ *      action handlers for mouse i/o in OpenGL and GLUT.
  */
 
 #ifndef CGMOUSEINPUT_H_
@@ -21,7 +21,6 @@ public:
 	typedef int CGMouseY;
 	typedef void (*CGMouseFunctionPtr)(CGMouseX, CGMouseY);
 
-	CGMouseInput();
 	virtual ~CGMouseInput();
 
 	static void initialize();
@@ -36,8 +35,8 @@ public:
 private:
 	static CGMouseFunctionPtr m_onMouseLeftClick;
 	static CGMouseFunctionPtr m_onMouseLeftClickRelease;
-	static CGMouseFunctionPtr m_onMouseRightCLick;
-	static CGMouseFunctionPtr m_onMpuseRightClickRelease;
+	static CGMouseFunctionPtr m_onMouseRightClick;
+	static CGMouseFunctionPtr m_onMouseRightClickRelease;
 	static CGMouseFunctionPtr m_onMouseMove;
 	static CGMouseFunctionPtr m_onMouseIdle;
 
@@ -50,6 +49,9 @@ private:
 	static void _defaultMouseRightClickReleaseHandler(CGMouseX, CGMouseY);
 	static void _defaultMouseMoveHandler(CGMouseX, CGMouseY);
 	static void _defaultMouseIdleHandler(CGMouseX, CGMouseY);
+
+	// Private constructor to prevent instantiation
+	CGMouseInput() { };
 
 };
 

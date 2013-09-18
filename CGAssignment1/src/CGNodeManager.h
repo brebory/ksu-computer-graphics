@@ -1,5 +1,5 @@
 /*
- * GLEntityManager.h
+ *  CGNodeManager.h
  *
  *  Created on: Sep 17, 2013
  *      Author: broberto
