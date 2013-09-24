@@ -18,6 +18,11 @@ namespace TinyCGLib {
 	int GL_WINDOW_X = 320;
 	int GL_WINDOW_Y = 320;
 
+	enum MENU_TYPE {
+		OPTION_ONE,
+		OPTION_TWO,
+	};
+
 	void glutRenderCallback() {
 		// Clear color buffer
 		glClear(GL_COLOR_BUFFER_BIT);

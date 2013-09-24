@@ -21,32 +21,43 @@ public:
 	typedef int CGMouseY;
 	typedef void (*CGMouseFunctionPtr)(CGMouseX, CGMouseY);
 
+	enum CGMouseButtonState { MouseButtonLeft, MouseButtonRight, MouseButtonMiddle, MouseButtonNone };
+
 	virtual ~CGMouseInput();
 
 	static void initialize();
 
 	static void setMouseLeftClickHandler(CGMouseFunctionPtr);
 	static void setMouseLeftClickReleaseHandler(CGMouseFunctionPtr);
+	static void setMouseLeftClickDragHandler(CGMouseFunctionPtr);
 	static void setMouseRightClickHandler(CGMouseFunctionPtr);
 	static void setMouseRightClickReleaseHandler(CGMouseFunctionPtr);
+	static void setMouseRightClickDragHandler(CGMouseFunctionPtr);
 	static void setMouseMoveHandler(CGMouseFunctionPtr);
 	static void setMouseIdleHandler(CGMouseFunctionPtr);
 
 private:
+
 	static CGMouseFunctionPtr m_onMouseLeftClick;
 	static CGMouseFunctionPtr m_onMouseLeftClickRelease;
+	static CGMouseFunctionPtr m_onMouseLeftClickDrag;
 	static CGMouseFunctionPtr m_onMouseRightClick;
 	static CGMouseFunctionPtr m_onMouseRightClickRelease;
+	static CGMouseFunctionPtr m_onMouseRightClickDrag;
 	static CGMouseFunctionPtr m_onMouseMove;
 	static CGMouseFunctionPtr m_onMouseIdle;
+	static CGMouseButtonState m_mouseButtonState;
 
 	static void _registerGlutMouseFunctions(void);
-	static void _processGlutMouse(int, int, int, int);
+	static void _processGlutMouseClicks(int, int, int, int);
+	static void _processGlutMouseDrags(int, int);
 
 	static void _defaultMouseLeftClickHandler(CGMouseX, CGMouseY);
 	static void _defaultMouseLeftClickReleaseHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseLeftClickDragHandler(CGMouseX, CGMouseY);
 	static void _defaultMouseRightClickHandler(CGMouseX, CGMouseY);
 	static void _defaultMouseRightClickReleaseHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseRightClickDragHandler(CGMouseX, CGMouseY);
 	static void _defaultMouseMoveHandler(CGMouseX, CGMouseY);
 	static void _defaultMouseIdleHandler(CGMouseX, CGMouseY);
 
