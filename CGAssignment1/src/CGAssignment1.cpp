@@ -18,7 +18,7 @@ using namespace TinyCGLib;
 int GL_WINDOW_X = 500;
 int GL_WINDOW_Y = 500;
 int windowID;
-float DEFAULT_SIZE = 1.0f;
+float DEFAULT_SIZE = 0.25f;
 CGNodeManager sceneManager;
 
 enum GLMenuType {
@@ -33,9 +33,9 @@ void glutRenderCallback() {
 	// Load the identity matrix to reset transformations
 	glLoadIdentity();
 	// Move the viewport back -15 units so that it's easier to see
-	glTranslatef(0.0f, 0.0f, -15.0f);
-	sceneManager.drawNodes();
+	glTranslatef(0.0f, 0.0f, -1.0f);
 	sceneManager.updateNodes();
+	sceneManager.drawNodes();
 	// Swap color buffers
 	glutSwapBuffers();
 }
@@ -138,6 +138,7 @@ void glutInitialize(int& argc, char **argv) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+
 }
 
 void menuInit() {
@@ -164,8 +165,8 @@ void menuCallback(int option) {
 		CGMouseInput::setMouseLeftClickHandler(CGMouseInput::_defaultMouseLeftClickHandler);
 		CGMouseInput::setMouseLeftClickReleaseHandler(CGMouseInput::_defaultMouseLeftClickReleaseHandler);
 		CGMouseInput::setMouseMoveHandler(CGMouseInput::_defaultMouseMoveHandler);
-		sceneManager.setRoot(new CGCircle(-1.0, 1.0, 0.0, DEFAULT_SIZE, 0.0, 0.0, 1.0));
-		sceneManager.getRoot()->setVelocity(0.005, 0.005, 0.0);
+		sceneManager.setRoot(new CGCircle(-0.5, -0.5, 0.0, DEFAULT_SIZE, 0.0, 0.0, 1.0));
+		sceneManager.getRoot()->setVelocity(0.0005, 0.0005, 0.0);
 		break;
 
 	case OPTION_THREE:

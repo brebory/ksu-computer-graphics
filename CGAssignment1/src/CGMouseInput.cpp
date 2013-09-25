@@ -105,13 +105,9 @@ void CGMouseInput::_mouseMoveFunc(int x, int y) {
 
 void CGMouseInput::_convertScreenPointsToScene(int x, int y, GLdouble out[3]) {
 	GLint viewport[4];
-	GLdouble modelview[16];
-	GLdouble projection[16];
 	GLfloat windowX, windowY, windowZ;
 
 	// Get the current modelview, projection, and viewport matrices and dimensions
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
 	glGetIntegerv(GL_VIEWPORT, viewport);
 
 	windowX = (float)x;
@@ -121,7 +117,9 @@ void CGMouseInput::_convertScreenPointsToScene(int x, int y, GLdouble out[3]) {
 	glReadPixels(x, (int)windowY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &windowZ);
 
 	// Reverse the projection back to scene coordinates
-	gluUnProject(windowX, windowY, windowZ, modelview, projection, viewport, &out[0], &out[1], &out[2]);
+	out[0] = (windowX - (float)viewport[2] / 2.0) / (double)(viewport[2] - (viewport[2]/2));
+	out[1] = (windowY - (float)viewport[3] / 2.0) / (double)(viewport[3] - (viewport[3]/2));
+	out[2] = windowZ;
 }
 
 void CGMouseInput::setMouseLeftClickHandler(CGMouseInput::CGMouseFunctionPtr onLeftClick) {

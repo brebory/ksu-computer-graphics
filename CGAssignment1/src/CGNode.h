@@ -41,6 +41,7 @@ protected:
 	GLfloat _position[3];
 	GLfloat _velocity[3];
 	GLfloat _color[3];
+	bool _moving;
 	std::vector<ManagedCGNodePtr> _children;
 	CGNode *_parent;
 

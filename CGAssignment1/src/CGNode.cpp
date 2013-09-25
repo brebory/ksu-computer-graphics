@@ -22,6 +22,7 @@ CGNode::CGNode() {
 	std::vector<CGNode::ManagedCGNodePtr> _children;
 	_children.reserve(3);
 	_parent = 0;
+	_moving = false;
 }
 
 CGNode::CGNode(GLfloat x, GLfloat y, GLfloat z) {
@@ -37,6 +38,7 @@ CGNode::CGNode(GLfloat x, GLfloat y, GLfloat z) {
 	std::vector<CGNode::ManagedCGNodePtr> _children;
 	_children.reserve(3);
 	_parent = 0;
+	_moving = false;
 }
 
 CGNode::CGNode(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b) {
@@ -52,6 +54,7 @@ CGNode::CGNode(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b)
 	std::vector<CGNode::ManagedCGNodePtr> _children;
 	_children.reserve(3);
 	_parent = 0;
+	_moving = false;
 }
 
 CGNode::~CGNode() { }
@@ -68,9 +71,12 @@ void CGNode::update() {
 }
 
 void CGNode::updateSelf() {
-	_position[0] += _velocity[0];
-	_position[1] += _velocity[1];
-	_position[2] += _velocity[2];
+	if (_moving) {
+		_position[0] += _velocity[0];
+		_position[1] += _velocity[1];
+		_position[2] += _velocity[2];
+	}
+
 }
 
 void CGNode::addChild(ManagedCGNodePtr child) {
@@ -93,7 +99,7 @@ void CGNode::updateChildren() {
 void CGNode::setColor(GLfloat r, GLfloat g, GLfloat b) {
 	_color[0] = r;
 	_color[1] = g;
-	_color[2] - b;
+	_color[2] = b;
 }
 
 void CGNode::setPosition(GLfloat x, GLfloat y, GLfloat z) {
@@ -106,6 +112,7 @@ void CGNode::setVelocity(GLfloat x, GLfloat y, GLfloat z) {
 	_velocity[0] = x;
 	_velocity[1] = y;
 	_velocity[2] = z;
+	_moving = true;
 }
 
 } /* namespace TinyCGLib */
