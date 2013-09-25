@@ -3,3 +3,6 @@
 Debug
 OpenGLTestApplication
 *.d
+.svn
+*.svn
+.svn*
