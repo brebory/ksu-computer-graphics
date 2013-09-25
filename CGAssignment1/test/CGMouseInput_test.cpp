@@ -9,12 +9,14 @@
 #include "CGMouseInput.h"
 #include <iostream>
 
-namespace TinyCGLib {
+namespace CGMouseInputTest {
+
+	using namespace TinyCGLib;
 
 	bool leftMouseDown;
 	GLfloat leftMouseLocation[2];
 	bool rightMouseDown;
-	GLfloat rightMouseLocation[2];
+	GLfloat nmrightMouseLocation[2];
 	int GL_WINDOW_X = 320;
 	int GL_WINDOW_Y = 320;
 
@@ -41,10 +43,10 @@ namespace TinyCGLib {
 		if (rightMouseDown) {
 			glBegin(GL_POLYGON);
 				glColor3d(0.0, 0.0, 1.0);
-				glVertex3f(rightMouseLocation[0] - 0.5, rightMouseLocation[1] - 0.5, -1);
-				glVertex3f(rightMouseLocation[0] + 0.5, rightMouseLocation[1] - 0.5, -1);
-				glVertex3f(rightMouseLocation[0] + 0.5, rightMouseLocation[1] + 0.5, -1);
-				glVertex3f(rightMouseLocation[0] - 0.5, rightMouseLocation[1] + 0.5, -1);
+				glVertex3f(nmrightMouseLocation[0] - 0.5, nmrightMouseLocation[1] - 0.5, -1);
+				glVertex3f(nmrightMouseLocation[0] + 0.5, nmrightMouseLocation[1] - 0.5, -1);
+				glVertex3f(nmrightMouseLocation[0] + 0.5, nmrightMouseLocation[1] + 0.5, -1);
+				glVertex3f(nmrightMouseLocation[0] - 0.5, nmrightMouseLocation[1] + 0.5, -1);
 			glEnd();
 
 		}
@@ -88,8 +90,8 @@ namespace TinyCGLib {
 
 		glGetIntegerv(GL_VIEWPORT, m_viewport);
 
-		rightMouseLocation[0] = (x - (GL_WINDOW_X/2)) / (float)GL_WINDOW_X;
-		rightMouseLocation[1] = -((y - (GL_WINDOW_Y/2)) / (float)GL_WINDOW_Y);
+		nmrightMouseLocation[0] = (x - (GL_WINDOW_X/2)) / (float)GL_WINDOW_X;
+		nmrightMouseLocation[1] = -((y - (GL_WINDOW_Y/2)) / (float)GL_WINDOW_Y);
 	}
 
 	void onRightClickRelease(CGMouseInput::CGMouseX x, CGMouseInput::CGMouseY y) {
@@ -125,13 +127,13 @@ namespace TinyCGLib {
 int main(int argc, char **argv) {
 		using namespace TinyCGLib;
 
-		glutInitialize(argc, argv);
+		CGMouseInputTest::glutInitialize(argc, argv);
 
 		// Set up GLMouseInput
 		CGMouseInput::initialize();
-		CGMouseInput::setMouseLeftClickHandler(onLeftClick);
-		CGMouseInput::setMouseLeftClickReleaseHandler(onLeftClickRelease);
-		CGMouseInput::setMouseRightClickHandler(onRightClick);
+		CGMouseInput::setMouseLeftClickHandler(CGMouseInputTest::onLeftClick);
+		CGMouseInput::setMouseLeftClickReleaseHandler(CGMouseInputTest::onLeftClickRelease);
+		CGMouseInput::setMouseRightClickHandler(CGMouseInputTest::onRightClick);
 
 		// Start main loop
 		glutMainLoop();

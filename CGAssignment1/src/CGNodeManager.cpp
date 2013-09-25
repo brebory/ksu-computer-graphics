@@ -9,17 +9,34 @@
 
 namespace TinyCGLib {
 
-CGNodeManager::CGNodeManager() {
-	// TODO Auto-generated constructor stub
+CGNodeManager::CGNodeManager()
+	:_rootNode() { }
 
+CGNodeManager::CGNodeManager(CGNode *root) {
+	_rootNode = root;
 }
 
 CGNodeManager::~CGNodeManager() {
-	// TODO Auto-generated destructor stub
+}
+
+void CGNodeManager::setRoot(CGNode *newRoot) {
+	_rootNode = newRoot;
+}
+
+CGNode* CGNodeManager::getRoot() {
+	return _rootNode;
+}
+
+void CGNodeManager::clear() {
+
 }
 
 void CGNodeManager::drawNodes() {
-	_rootNode.draw();
+	_rootNode->draw();
+}
+
+void CGNodeManager::updateNodes() {
+	_rootNode->update();
 }
 
 } /* namespace TinyCGLib */

@@ -6,6 +6,7 @@
  */
 
 #include "CGMouseInput.h"
+#include <iostream>
 
 namespace TinyCGLib {
 
@@ -30,11 +31,17 @@ void CGMouseInput::initialize() {
 void CGMouseInput::_registerGlutMouseFunctions() {
 
 	glutMouseFunc(_processGlutMouseClicks);
-	glutPassiveMotionFunc(m_onMouseMove);
+	glutPassiveMotionFunc(_mouseMoveFunc);
 	glutMotionFunc(_processGlutMouseDrags);
 }
 
 void CGMouseInput::_processGlutMouseClicks(int button, int state, int x, int y) {
+
+	// Convert the screen x and y to scene x and y
+	// Convert the screen x and y to scene x and y
+	GLdouble coords[3];
+
+	_convertScreenPointsToScene(x, y, coords);
 
 	// Check which button was pressed and it's current state, and call the
 	// appropriate member click handler.
@@ -42,19 +49,19 @@ void CGMouseInput::_processGlutMouseClicks(int button, int state, int x, int y) 
 	case GLUT_LEFT_BUTTON:
 		if (state == GLUT_DOWN) {
 			m_mouseButtonState = MouseButtonLeft;
-			m_onMouseLeftClick((CGMouseX)x, (CGMouseY)y);
+			m_onMouseLeftClick(coords[0], coords[1]);
 		} else if (state == GLUT_UP) {
 			m_mouseButtonState = MouseButtonNone;
-			m_onMouseLeftClickRelease((CGMouseX)x, (CGMouseY)y);
+			m_onMouseLeftClickRelease(coords[0], coords[1]);
 		}
 		break;
 	case GLUT_RIGHT_BUTTON:
 		if (state == GLUT_DOWN) {
 			m_mouseButtonState = MouseButtonRight;
-			m_onMouseRightClick((CGMouseX)x, (CGMouseY)y);
+			m_onMouseRightClick(coords[0], coords[1]);
 		} else if (state == GLUT_UP) {
 			m_mouseButtonState = MouseButtonNone;
-			m_onMouseRightClickRelease((CGMouseX)x, (CGMouseY)y);
+			m_onMouseRightClickRelease(coords[0], coords[1]);
 		}
 		break;
 	}
@@ -62,14 +69,19 @@ void CGMouseInput::_processGlutMouseClicks(int button, int state, int x, int y) 
 
 void CGMouseInput::_processGlutMouseDrags(int x, int y) {
 
+	// Convert the screen x and y to scene x and y
+	GLdouble coords[3];
+
+	_convertScreenPointsToScene(x, y, coords);
+
 	// Check which button was pressed and it's current state, and call the
 	// appropriate member drag handler
 	switch (m_mouseButtonState) {
 	case MouseButtonLeft:
-		m_onMouseLeftClickDrag((CGMouseX)x, (CGMouseY)y);
+		m_onMouseLeftClickDrag(coords[0], coords[1]);
 		break;
 	case MouseButtonRight:
-		m_onMouseRightClickDrag((CGMouseX)x, (CGMouseY)y);
+		m_onMouseRightClickDrag(coords[0], coords[1]);
 		break;
 	case MouseButtonMiddle:
 		// stub
@@ -83,6 +95,35 @@ void CGMouseInput::_processGlutMouseDrags(int x, int y) {
 	}
 }
 
+void CGMouseInput::_mouseMoveFunc(int x, int y) {
+	GLdouble coords[3];
+
+	_convertScreenPointsToScene(x, y, coords);
+
+	m_onMouseMove(coords[0], coords[1]);
+}
+
+void CGMouseInput::_convertScreenPointsToScene(int x, int y, GLdouble out[3]) {
+	GLint viewport[4];
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	GLfloat windowX, windowY, windowZ;
+
+	// Get the current modelview, projection, and viewport matrices and dimensions
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	windowX = (float)x;
+	// Invert the y component to match OpenGL's coordinate system
+	windowY = (float)viewport[3] - (float)y;
+	// Get the current z value based on the depth buffer and the clicked screen coordinates
+	glReadPixels(x, (int)windowY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &windowZ);
+
+	// Reverse the projection back to scene coordinates
+	gluUnProject(windowX, windowY, windowZ, modelview, projection, viewport, &out[0], &out[1], &out[2]);
+}
+
 void CGMouseInput::setMouseLeftClickHandler(CGMouseInput::CGMouseFunctionPtr onLeftClick) {
 	m_onMouseLeftClick = onLeftClick;
 }
@@ -93,6 +134,7 @@ void CGMouseInput::setMouseLeftClickReleaseHandler(CGMouseInput::CGMouseFunction
 
 void CGMouseInput::setMouseLeftClickDragHandler(CGMouseInput::CGMouseFunctionPtr onLeftClickDrag) {
 	m_onMouseLeftClickDrag = onLeftClickDrag;
+	_registerGlutMouseFunctions();
 }
 
 void CGMouseInput::setMouseRightClickHandler(CGMouseInput::CGMouseFunctionPtr onRightClick) {
@@ -105,14 +147,26 @@ void CGMouseInput::setMouseRightClickReleaseHandler(CGMouseInput::CGMouseFunctio
 
 void CGMouseInput::setMouseRightClickDragHandler(CGMouseInput::CGMouseFunctionPtr onRightClickDrag) {
 	m_onMouseRightClickDrag = onRightClickDrag;
+	_registerGlutMouseFunctions();
 }
 
 void CGMouseInput::setMouseMoveHandler(CGMouseInput::CGMouseFunctionPtr onMouseMove) {
 	m_onMouseMove = onMouseMove;
+	_registerGlutMouseFunctions();
 }
 
 void CGMouseInput::setMouseIdleHandler(CGMouseInput::CGMouseFunctionPtr onMouseIdle) {
 	m_onMouseIdle = onMouseIdle;
+	_registerGlutMouseFunctions();
+}
+
+void CGMouseInput::setRightClickMenu(CGMouseInput::CGMenuInitFunctionPtr init, CGMouseInput::CGMenuHandlerFunctionPtr handler) {
+	// Use init to set up menu items and enums for handler
+	// Use handler to handle menu item clicks
+	glutCreateMenu(handler);
+	init();
+	setMouseRightClickHandler(_defaultMouseRightClickHandler);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void CGMouseInput::_defaultMouseLeftClickHandler(CGMouseX x, CGMouseY y) {

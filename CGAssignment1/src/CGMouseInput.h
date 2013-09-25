@@ -17,9 +17,11 @@ namespace TinyCGLib {
 
 class CGMouseInput {
 public:
-	typedef int CGMouseX;
-	typedef int CGMouseY;
+	typedef double CGMouseX;
+	typedef double CGMouseY;
 	typedef void (*CGMouseFunctionPtr)(CGMouseX, CGMouseY);
+	typedef void (*CGMenuHandlerFunctionPtr)(int);
+	typedef void (*CGMenuInitFunctionPtr)(void);
 
 	enum CGMouseButtonState { MouseButtonLeft, MouseButtonRight, MouseButtonMiddle, MouseButtonNone };
 
@@ -35,6 +37,18 @@ public:
 	static void setMouseRightClickDragHandler(CGMouseFunctionPtr);
 	static void setMouseMoveHandler(CGMouseFunctionPtr);
 	static void setMouseIdleHandler(CGMouseFunctionPtr);
+	static void setRightClickMenu(CGMenuInitFunctionPtr, CGMenuHandlerFunctionPtr);
+
+	static void _defaultMouseLeftClickHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseLeftClickReleaseHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseLeftClickDragHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseRightClickHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseRightClickReleaseHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseRightClickDragHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseMoveHandler(CGMouseX, CGMouseY);
+	static void _defaultMouseIdleHandler(CGMouseX, CGMouseY);
+
+	static void _convertScreenPointsToScene(int, int, GLdouble[3]);
 
 private:
 
@@ -51,15 +65,7 @@ private:
 	static void _registerGlutMouseFunctions(void);
 	static void _processGlutMouseClicks(int, int, int, int);
 	static void _processGlutMouseDrags(int, int);
-
-	static void _defaultMouseLeftClickHandler(CGMouseX, CGMouseY);
-	static void _defaultMouseLeftClickReleaseHandler(CGMouseX, CGMouseY);
-	static void _defaultMouseLeftClickDragHandler(CGMouseX, CGMouseY);
-	static void _defaultMouseRightClickHandler(CGMouseX, CGMouseY);
-	static void _defaultMouseRightClickReleaseHandler(CGMouseX, CGMouseY);
-	static void _defaultMouseRightClickDragHandler(CGMouseX, CGMouseY);
-	static void _defaultMouseMoveHandler(CGMouseX, CGMouseY);
-	static void _defaultMouseIdleHandler(CGMouseX, CGMouseY);
+	static void _mouseMoveFunc(int, int);
 
 	// Private constructor to prevent instantiation
 	CGMouseInput() { };

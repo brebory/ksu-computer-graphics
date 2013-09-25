@@ -11,7 +11,10 @@
 #include "../src/CGNodeManager.h"
 #include <iostream>
 
-namespace TinyCGLib {
+namespace CGNodeManagerTest {
+
+	using namespace TinyCGLib;
+
 	bool leftMouseDown;
 	GLfloat leftMouseLocation[2];
 	bool rightMouseDown;
@@ -126,13 +129,13 @@ namespace TinyCGLib {
 int main(int argc, char **argv) {
 	using namespace TinyCGLib;
 
-	glutInitialize(argc, argv);
+	CGNodeManagerTest::glutInitialize(argc, argv);
 
 	// Set up GLMouseInput
 	CGMouseInput::initialize();
-	CGMouseInput::setMouseLeftClickHandler(onLeftClick);
-	CGMouseInput::setMouseLeftClickReleaseHandler(onLeftClickRelease);
-	CGMouseInput::setMouseRightClickHandler(onRightClick);
+	CGMouseInput::setMouseLeftClickHandler(CGNodeManagerTest::onLeftClick);
+	CGMouseInput::setMouseLeftClickReleaseHandler(CGNodeManagerTest::onLeftClickRelease);
+	CGMouseInput::setMouseRightClickHandler(CGNodeManagerTest::onRightClick);
 
 	// Start main loop
 	glutMainLoop();

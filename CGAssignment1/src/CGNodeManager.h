@@ -14,14 +14,21 @@
 namespace TinyCGLib {
 
 class CGNodeManager {
+
+	// Class CGNodeManager serves as the entry point for the scene graph
 public:
 	CGNodeManager();
+	CGNodeManager(CGNode*);
 	virtual ~CGNodeManager();
 
+	void setRoot(CGNode*);
+	CGNode* getRoot();
+	void clear();
 	void drawNodes();
+	void updateNodes();
 
 private:
-	CGNode _rootNode;
+	CGNode* _rootNode;
 };
 
 } /* namespace TinyCGLib */
