@@ -12,6 +12,7 @@
 #include "CGRectangle.h"
 #include "CGCircle.h"
 #include <iostream>
+#include <math.h>
 
 using namespace TinyCGLib;
 
@@ -100,8 +101,6 @@ void opt1LeftClickDragCallback(CGMouseInput::CGMouseX x, CGMouseInput::CGMouseY 
 	}
 }
 
-
-
 void opt1MouseMoveCallback(CGMouseInput::CGMouseX x, CGMouseInput::CGMouseY y) {
 	CGNode *selectedNode = sceneManager.getRoot();
 	if (selectedNode) {
@@ -109,6 +108,21 @@ void opt1MouseMoveCallback(CGMouseInput::CGMouseX x, CGMouseInput::CGMouseY y) {
 	} else {
 		sceneManager.setRoot(new CGRectangle(x, y, 0.0, DEFAULT_SIZE, DEFAULT_SIZE, 1.0, 1.0, 0.0));
 	}
+}
+
+void opt3LeftClickCallback(CGMouseInput::CGMouseX x, CGMouseInput::CGMouseY y) {
+	sceneManager.setRoot(new CGCircle(x, y, 0.0, 0.0, 1.0, 1.0, 1.0));
+}
+
+void opt3LeftClickDragCallback(CGMouseInput::CGMouseX x, CGMouseInput::CGMouseY y) {
+	CGCircle *selectedCircle = dynamic_cast<CGCircle*>(sceneManager.getRoot());
+	float dist = sqrt(pow((double)(selectedCircle->getPositionX() - x), 2.0) + pow((double)(selectedCircle->getPositionY() - y), 2.0));
+	selectedCircle->setRadius(dist);
+}
+
+void opt3LeftClickReleaseCallback(CGMouseInput::CGMouseX x, CGMouseInput::CGMouseY y) {
+	CGCircle *selectedCircle = dynamic_cast<CGCircle*>(sceneManager.getRoot());
+	selectedCircle->setColor(0.0, 1.0, 0.0);
 }
 
 void glutInitialize(int& argc, char **argv) {
@@ -161,8 +175,8 @@ void menuCallback(int option) {
 
 	case OPTION_TWO:
 		// Reset click handlers
-		CGMouseInput::setMouseLeftClickDragHandler(CGMouseInput::_defaultMouseLeftClickDragHandler);
 		CGMouseInput::setMouseLeftClickHandler(CGMouseInput::_defaultMouseLeftClickHandler);
+		CGMouseInput::setMouseLeftClickDragHandler(CGMouseInput::_defaultMouseLeftClickDragHandler);
 		CGMouseInput::setMouseLeftClickReleaseHandler(CGMouseInput::_defaultMouseLeftClickReleaseHandler);
 		CGMouseInput::setMouseMoveHandler(CGMouseInput::_defaultMouseMoveHandler);
 		sceneManager.setRoot(new CGCircle(-0.5, -0.5, 0.0, DEFAULT_SIZE, 0.0, 0.0, 1.0));
@@ -170,9 +184,9 @@ void menuCallback(int option) {
 		break;
 
 	case OPTION_THREE:
-		CGMouseInput::setMouseLeftClickDragHandler(CGMouseInput::_defaultMouseLeftClickDragHandler);
-		CGMouseInput::setMouseLeftClickHandler(CGMouseInput::_defaultMouseLeftClickHandler);
-		CGMouseInput::setMouseLeftClickReleaseHandler(CGMouseInput::_defaultMouseLeftClickReleaseHandler);
+		CGMouseInput::setMouseLeftClickHandler(opt3LeftClickCallback);
+		CGMouseInput::setMouseLeftClickDragHandler(opt3LeftClickDragCallback);
+		CGMouseInput::setMouseLeftClickReleaseHandler(opt3LeftClickReleaseCallback);
 		CGMouseInput::setMouseMoveHandler(CGMouseInput::_defaultMouseMoveHandler);
 		break;
 	}

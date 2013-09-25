@@ -36,6 +36,9 @@ public:
 	void setPosition(GLfloat, GLfloat, GLfloat);
 	void setVelocity(GLfloat, GLfloat, GLfloat);
 
+	GLfloat getPositionX();
+	GLfloat getPositionY();
+	GLfloat getPositionZ();
 
 protected:
 	GLfloat _position[3];

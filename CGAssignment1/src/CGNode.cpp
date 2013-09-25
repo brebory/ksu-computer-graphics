@@ -115,4 +115,16 @@ void CGNode::setVelocity(GLfloat x, GLfloat y, GLfloat z) {
 	_moving = true;
 }
 
+GLfloat CGNode::getPositionX() {
+	return _position[0];
+}
+
+GLfloat CGNode::getPositionY() {
+	return _position[1];
+}
+
+GLfloat CGNode::getPositionZ() {
+	return _position[2];
+}
+
 } /* namespace TinyCGLib */
